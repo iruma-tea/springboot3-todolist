@@ -3,11 +3,17 @@ package com.example.todolist.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.todolist.entity.Todo;
+import com.example.todolist.form.TodoData;
 import com.example.todolist.repository.TodoRepository;
+import com.example.todolist.service.TodoService;
 
 import lombok.AllArgsConstructor;
 
@@ -15,6 +21,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TodoListController {
     private final TodoRepository todoRepository;
+    private final TodoService todoService;
 
     @GetMapping("/todo")
     public ModelAndView showTodoList(ModelAndView mv) {
@@ -22,5 +29,24 @@ public class TodoListController {
         List<Todo> todoList = todoRepository.findAll();
         mv.addObject("todoList", todoList);
         return mv;
+    }
+
+    @GetMapping("/todo/create")
+    public ModelAndView createTodo(ModelAndView mv) {
+        mv.setViewName("todoForm");
+        mv.addObject("todoData", new TodoData());
+        return mv;
+    }
+
+    @PostMapping("/todo/create")
+    public ModelAndView createTodo(@ModelAttribute @Validated TodoData todoData, BindingResult result,
+            ModelAndView mv) {
+        // TODO 未実装
+        return null;
+    }
+
+    @PostMapping("/todo/cancel")
+    public String cancel() {
+        return "redirect:/todo";
     }
 }
