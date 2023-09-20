@@ -41,8 +41,16 @@ public class TodoListController {
     @PostMapping("/todo/create")
     public ModelAndView createTodo(@ModelAttribute @Validated TodoData todoData, BindingResult result,
             ModelAndView mv) {
-        // TODO 未実装
-        return null;
+
+        boolean isValid = todoService.isValid(todoData, result);
+        if (!result.hasErrors() && isValid) {
+            Todo todo = todoData.toEntity();
+            todoRepository.saveAndFlush(todo);
+            return showTodoList(mv);
+        } else {
+            mv.setViewName("todoForm");
+            return mv;
+        }
     }
 
     @PostMapping("/todo/cancel")

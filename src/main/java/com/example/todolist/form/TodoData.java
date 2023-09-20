@@ -19,7 +19,7 @@ public class TodoData {
     private String title;
 
     @NotNull(message = "重要度を選択してください")
-    private Integer impotance;
+    private Integer importance;
 
     @Min(value = 0, message = "緊急度を選択してください")
     private Integer urgency;
@@ -31,7 +31,7 @@ public class TodoData {
         Todo todo = new Todo();
         todo.setId(id);
         todo.setTitle(title);
-        todo.setImportance(impotance);
+        todo.setImportance(importance);
         todo.setUrgency(urgency);
         todo.setDone(done);
 
