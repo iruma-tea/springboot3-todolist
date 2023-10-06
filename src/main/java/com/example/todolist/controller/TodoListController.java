@@ -115,7 +115,7 @@ public class TodoListController {
         return mv;
     }
 
-    @GetMapping("/todo/create")
+    @PostMapping("/todo/create/form")
     public ModelAndView createTodo(ModelAndView mv) {
         mv.setViewName("todoForm");
         mv.addObject("todoData", new TodoData());
@@ -123,7 +123,7 @@ public class TodoListController {
         return mv;
     }
 
-    @PostMapping("/todo/create")
+    @PostMapping("/todo/create/do")
     public String createTodo(@ModelAttribute @Validated TodoData todoData, BindingResult result,
             Model model) {
 
