@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Utils {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Date str2date(String s) {
         long ms = 0;
