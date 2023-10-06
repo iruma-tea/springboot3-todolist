@@ -15,13 +15,13 @@ import lombok.Data;
 public class TodoData {
     private Integer id;
 
-    @NotBlank(message = "件名を入力してください")
+    @NotBlank
     private String title;
 
-    @NotNull(message = "重要度を選択してください")
+    @NotNull
     private Integer importance;
 
-    @Min(value = 0, message = "緊急度を選択してください")
+    @Min(value = 0)
     private Integer urgency;
 
     private String deadline;
