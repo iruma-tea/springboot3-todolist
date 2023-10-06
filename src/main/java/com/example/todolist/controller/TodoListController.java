@@ -57,7 +57,8 @@ public class TodoListController {
         List<Todo> todoList = null;
         if (todoService.isValid(todoQuery, result)) {
             // todoList = todoService.doQuery(todoQuery);
-            todoList = todoDatoImpl.findByJPQL(todoQuery);
+            // todoList = todoDatoImpl.findByJPQL(todoQuery);
+            todoList = todoDatoImpl.findByCriteria(todoQuery);
         }
         mv.addObject("todoList", todoList);
         return mv;
