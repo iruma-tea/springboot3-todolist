@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"[java]": {
+			"editor.suggest.snippetsPreventQuickSuggestions": false,
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "redhat.java",
+			"editor.codeActionsOnSave": {"source.organizeImports": true,"source.fixAll": true}
+		}
+	}
+}
