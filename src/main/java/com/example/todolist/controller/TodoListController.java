@@ -2,6 +2,9 @@ package com.example.todolist.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,25 +45,34 @@ public class TodoListController {
     }
 
     @GetMapping("/todo")
-    public ModelAndView showTodoList(ModelAndView mv) {
+    public ModelAndView showTodoList(ModelAndView mv, @PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable) {
         mv.setViewName("todoList");
-        List<Todo> todoList = todoRepository.findAll();
-        mv.addObject("todoList", todoList);
+        Page<Todo> todoPage = todoRepository.findAll(pageable);
         mv.addObject("todoQuery", new TodoQuery());
+        mv.addObject("todoPage", todoPage);
+        mv.addObject("todoList", todoPage.getContent());
+        session.setAttribute("todoQuery", new TodoQuery());
+
         return mv;
     }
 
     @PostMapping("/todo/query")
-    public ModelAndView queryTodo(@ModelAttribute TodoQuery todoQuery, BindingResult result, ModelAndView mv) {
+    public ModelAndView queryTodo(@ModelAttribute TodoQuery todoQuery, BindingResult result, @PageableDefault(page = 0, size = 5) Pageable pageable,ModelAndView mv) {
         mv.setViewName("todoList");
 
-        List<Todo> todoList = null;
+        Page<Todo> todoPage = null;
         if (todoService.isValid(todoQuery, result)) {
-            // todoList = todoService.doQuery(todoQuery);
-            // todoList = todoDatoImpl.findByJPQL(todoQuery);
-            todoList = todoDatoImpl.findByCriteria(todoQuery);
+            todoPage = todoDatoImpl.findByCriteria(todoQuery, pageable);
+
+            // 入力された検索条件をsessionに保存
+            session.setAttribute("todoQuery", todoQuery);
+
+            mv.addObject("todoPage", todoPage);
+            mv.addObject("todoList", todoPage.getContent());
+        } else {
+            mv.addObject("todoPage", null);
+            mv.addObject("todoList", null);
         }
-        mv.addObject("todoList", todoList);
         return mv;
     }
 
