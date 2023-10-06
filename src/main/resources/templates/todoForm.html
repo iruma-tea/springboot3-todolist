@@ -16,54 +16,55 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>件名</th>
+                    <th th:text="#{label.title}">件名</th>
                     <td>
                         <input type="text" name="title" id="title" size="40" th:value="*{title}">
                         <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" th:errorclass="red"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th>重要度</th>
+                    <th th:text="#{label.importance}">重要度</th>
                     <td>
-                        <input type="radio" value="1" th:field="*{importance}">高
-                        <input type="radio" value="0" th:field="*{importance}">低
+                        <input type="radio" value="1" th:field="*{importance}" th:text="#{radio.high}">
+                        <input type="radio" value="0" th:field="*{importance}" th:text="#{radio.low}">
                         <div th:if="${#fields.hasErrors('importance')}" th:errors="*{importance}" th:errorclass="red"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th>緊急度</th>
+                    <th th:text="#{label.urgency}">緊急度</th>
                     <td>
                         <select name="urgency" id="urgency">
-                            <option value="-1" th:field="*{urgency}">選択してください</option>
-                            <option value="1" th:field="*{urgency}">高</option>
-                            <option value="0" th:field="*{urgency}">低</option>
+                            <option value="-1" th:field="*{urgency}" th:text="#{option.none}">選択してください</option>
+                            <option value="1" th:field="*{urgency}" th:text="#{option.high}">高</option>
+                            <option value="0" th:field="*{urgency}" th:text="#{option.low}">低</option>
                         </select>
                         <div th:if="${#fields.hasErrors('urgency')}" th:errors="*{urgency}" th:errorclass="red"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th>期限</th>
+                    <th th:text="#{label.deadline}">期限</th>
                     <td>
                         <input type="text" name="deadline" id="deadline" th:value="*{deadline}" placeholder="yyyy-mm-dd">
                         <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" th:errorclass="red"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th>チェック</th>
+                    <th th:text="#{label.check}">チェック</th>
                     <td>
-                        <input type="checkbox" value="Y" th:field="*{done}">完了
+                        <input type="checkbox" value="Y" th:field="*{done}">
+                        <span th:text="#{text.done}">完了</span>
                         <input type="hidden" name="!done" value="N" />
                     </td>
                 </tr>
             </table>
             <div th:if="${session.mode == 'update'}">
-                <button type="submit" th:formaction="@{/todo/update}">更新</button>
-                <button type="submit" th:formaction="@{/todo/delete}">削除</button>
-                <button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
+                <button type="submit" th:formaction="@{/todo/update}" th:text="#{button.update}">更新</button>
+                <button type="submit" th:formaction="@{/todo/delete}" th:text="#{button.delete}">削除</button>
+                <button type="submit" th:formaction="@{/todo/cancel}" th:text="#{button.cancel}">キャンセル</button>
             </div>
             <div th:unless="${session.mode == 'update'}">
-                <button type="submit" th:formaction="@{/todo/create/do}">登録</button>
-                <button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
+                <button type="submit" th:formaction="@{/todo/create/do}" th:text="#{button.add}">登録</button>
+                <button type="submit" th:formaction="@{/todo/cancel}" th:text="#{button.cancel}">キャンセル</button>
             </div>
         </form>
     </body>
