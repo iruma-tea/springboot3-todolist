@@ -6,6 +6,7 @@
         <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
     </head>
     <body>
+        <div th:replace= "~{fragments :: msg_area }"></div>
         <form th:action="@{/}" method="post" th:object="${todoQuery}">
             <div style="display: flex">
                 <table border="1">
