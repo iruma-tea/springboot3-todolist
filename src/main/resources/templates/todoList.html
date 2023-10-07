@@ -69,7 +69,7 @@
                 <td th:text="${todo.done == 'Y' ? '__#{text.done}__':''}"></td>
             </tr>
         </table>
-        <div th:if="${todoPage != null}">
+        <div th:if="${todoPage != null && todoPage.getContent().size() > 0}">
             <span th:text="#{text.paging(${todoPage.getNumber() + 1},${todoPage.getTotalPages()})}"></span>
             <ul id="nav">
                 <li>
