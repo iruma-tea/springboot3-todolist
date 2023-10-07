@@ -3,6 +3,7 @@ package com.example.todolist.form;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.todolist.common.Utils;
@@ -14,8 +15,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class TodoData {
     private Integer id;
 
@@ -33,6 +36,25 @@ public class TodoData {
 
     @Valid
     private List<TaskData> taskList;
+
+    private TaskData newTask;
+
+    public TodoData(Todo todo) {
+        this.id = todo.getId();
+        this.title = todo.getTitle();
+        this.importance = todo.getImportance();
+        this.urgency = todo.getUrgency();
+        this.deadline = Utils.date2str(todo.getDeadline());
+        this.done = todo.getDone();
+
+        this.taskList = new ArrayList<>();
+        String dt;
+        for (Task task : todo.getTaskList()) {
+            dt = Utils.date2str(task.getDeadline());
+            this.taskList.add(new TaskData(task.getId(), task.getTitle(), dt, task.getDone()));
+        }
+        newTask = new TaskData();
+    }
 
     public Todo toEntity() {
         Todo todo = new Todo();

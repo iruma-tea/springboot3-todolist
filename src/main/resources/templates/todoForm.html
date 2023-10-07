@@ -89,6 +89,24 @@
                             <a th:href="@{/task/delete(task_id=${task.id},todo_id=*{id})}" th:text="#{link.delete}"></a>
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="text" name="newTask.title" size="40" th:value="*{newTask.title}">
+                            <div th:if= "${#fields.hasErrors('newTask.title')}" th:errors="*{newTask.title}" th:errorclass="red"></div>
+                        </td>
+                        <td>
+                            <input type="text" name="newTask.deadline" size="10" th:value="*{newTask.deadline}" placeholder="yyyy-mm-dd">
+                            <div th:if= "${#fields.hasErrors('newTask.deadline')}" th:errors="*{newTask.deadline}" th:errorclass="red"></div>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="newTask.done" value="Y" th:checked="*{newTask.done=='Y'}">
+                            <input type="hidden" name="!newTask.done" value="N">
+                        </td>
+                        <td style="padding: 0px;">
+                            <button type="submit" th:formaction="@{/task/create}" th:text="#{button.add}" style="margin: 2px; padding: 2px; width: 4em;"></button>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div th:if="${session.mode == 'update'}">

@@ -146,7 +146,7 @@ public class TodoListController {
     public ModelAndView todoById(@PathVariable(name = "id") int id, ModelAndView mv) {
         mv.setViewName("todoForm");
         Todo todo = todoRepository.findById(id).get();
-        mv.addObject("todoData", todo);
+        mv.addObject("todoData", new TodoData(todo));
         session.setAttribute("mode", "update");
         return mv;
     }
