@@ -31,4 +31,4 @@ INSERT INTO task (todo_id, title, deadline, done) VALUES (2, 'task2-1', null, 'N
 INSERT INTO task (todo_id, title, deadline, done) VALUES (2, 'task2-2', null, 'Y');
 INSERT INTO task (todo_id, title, deadline, done) VALUES (3, 'task3-1', '2021-10-02', 'N');
 INSERT INTO task (todo_id, title, deadline, done) VALUES (3, 'task3-2', null, 'N');
-INSERT INTO task (todo_id, title, deadline, done) VALUES (3, 'task3-1', null, 'N');
+INSERT INTO task (todo_id, title, deadline, done) VALUES (3, 'task3-3', null, 'N');

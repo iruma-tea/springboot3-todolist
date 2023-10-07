@@ -1,5 +1,6 @@
 package com.example.todolist.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
@@ -14,14 +15,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todolist.common.OpMsg;
 import com.example.todolist.dao.TodoDatoImpl;
+import com.example.todolist.entity.Task;
 import com.example.todolist.entity.Todo;
 import com.example.todolist.form.TodoData;
 import com.example.todolist.form.TodoQuery;
+import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
 
@@ -35,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TodoListController {
     private final TodoRepository todoRepository;
+    private final TaskRepository taskRepository;
     private final TodoService todoService;
     private final HttpSession session;
     private final MessageSource messageSource;
@@ -69,6 +74,20 @@ public class TodoListController {
         mv.addObject("todoQuery", todoQuery);
         mv.addObject("todoPage", todoPage);
         mv.addObject("todoList", todoPage.getContent());
+
+        List<Todo> todoList = todoRepository.findAll();
+        List<Task> taskList;
+        for (Todo todo : todoList) {
+            System.out.println(todo);
+            taskList = todo.getTaskList();
+            if (taskList.size() == 0) {
+                System.out.println("\tTask not found");
+            } else {
+                for (Task task : taskList) {
+                    System.out.println("\t" + task);
+                }
+            }
+        }
 
         return mv;
     }
@@ -182,6 +201,16 @@ public class TodoListController {
         String msg = messageSource.getMessage("msg.i.todo_deleted", null, locale);
         redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
         return "redirect:/todo";
+    }
+
+    @GetMapping("/task/delete")
+    public String deleteTask(@RequestParam(name = "task_id") int taskId, @RequestParam(name = "todo_id") int todoId,
+            RedirectAttributes redirectAttributes, Locale locale) {
+        taskRepository.deleteById(taskId);
+
+        String msg = messageSource.getMessage("msg.i.task_deleted", null, locale);
+        redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
+        return "redirect:/todo/" + todoId;
     }
 
     @PostMapping("/todo/cancel")
