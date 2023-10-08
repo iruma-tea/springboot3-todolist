@@ -123,5 +123,27 @@
                 <button type="submit" th:formaction="@{/todo/cancel}" th:text="#{button.cancel}">キャンセル</button>
             </div>
         </form>
+        <div th:if= "${session.mode == 'update'}">
+            <hr style="margin-top: 1em;">
+            <span th:text="#{text.regist_attachedfile}"></span>
+            <form th:action= "@{/todo/af/upload}" enctype="multipart/form-data" method="post">
+                <table>
+                    <tr>
+                        <th th:text="#{label.filename}">ファイル</th>
+                        <th th:text="#{label.note}">メモ</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" name="file_contents" required>
+                        </td>
+                        <td>
+                            <input type="text" name="note" size="40">
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" th:text="#{button.add}"></button>
+                <input type="hidden" name="todo_id" th:value="${todoData.id}">
+            </form>
+        </div>
     </body>
 </html>
