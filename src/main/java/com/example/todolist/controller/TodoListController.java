@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -236,5 +237,13 @@ public class TodoListController {
     @PostMapping("/todo/cancel")
     public String cancel() {
         return "redirect:/todo";
+    }
+
+    @PostMapping("/todo/af/upload")
+    public String uploadAttachedFile(@RequestParam("todo_id") int todoId, @RequestParam("note") String note,
+            @RequestParam("file_contents") MultipartFile file_contents, RedirectAttributes redirectAttributes,
+            Locale locale) {
+        // TODO 未実装
+        return null;
     }
 }
