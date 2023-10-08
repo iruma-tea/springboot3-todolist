@@ -120,6 +120,45 @@ public class TodoService {
         return ans;
     }
 
+    public boolean isValid(TaskData taskData, BindingResult result, Locale locale) {
+        boolean ans = true;
+
+        if (Utils.isBlank(taskData.getTitle())) {
+            FieldError fieldError = new FieldError(result.getObjectName(), "newTask.title",
+                    messageSource.getMessage("NotBlank.taskData.title", null, locale));
+            result.addError(fieldError);
+            ans = false;
+        } else {
+            if (Utils.isAllDoubleSpace(taskData.getTitle())) {
+                FieldError fieldError = new FieldError(result.getObjectName(), "newTask.title",
+                        messageSource.getMessage("DoubleSpace.todoData.title", null, locale));
+                result.addError(fieldError);
+                ans = false;
+            }
+        }
+
+        String deadline = taskData.getDeadline();
+        if (deadline.equals("")) {
+            return ans;
+        }
+
+        if (!Utils.isValidDateFormat(deadline)) {
+            FieldError fieldError = new FieldError(result.getObjectName(), "newTask.deadline",
+                    messageSource.getMessage("InvalidFormat.todoData.deadline", null, locale));
+            result.addError(fieldError);
+            ans = false;
+        } else {
+            if (!Utils.isTodayOrFurtureDate(deadline)) {
+                FieldError fieldError = new FieldError(result.getObjectName(), "newTask.deadline",
+                        messageSource.getMessage("Past.todoData.deadline", null, locale));
+                result.addError(fieldError);
+                ans = false;
+            }
+        }
+
+        return ans;
+    }
+
     public List<Todo> doQuery(TodoQuery todoQuery) {
         List<Todo> todoList = null;
         if (todoQuery.getTitle().length() > 0) {

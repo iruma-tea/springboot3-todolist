@@ -8,6 +8,7 @@
     <body>
         <div th:replace= "~{fragments :: msg_area }"></div>
         <form th:action="@{/}" method="post" th:object="${todoData}">
+            ■ToDo
             <table>
                 <tr>
                     <th>id</th>
@@ -58,8 +59,10 @@
                     </td>
                 </tr>
             </table>
-            <hr style="margin-top: 2em; margin-bottom: 1em;">
-            <div th:if= "${#lists.size(todoData.taskList)} != 0">
+            <div th:if= "${session.mode == 'update'}">
+                <hr style="margin-top: 2em; margin-bottom: 1em;">
+                ■Task
+            <!-- <div th:if= "${#lists.size(todoData.taskList)} != 0"> -->
                 <table>
                     <tr>
                         <th>id</th>
@@ -108,6 +111,7 @@
                         </td>
                     </tr>
                 </table>
+            <!-- </div> -->
             </div>
             <div th:if="${session.mode == 'update'}">
                 <button type="submit" th:formaction="@{/todo/update}" th:text="#{button.update}">更新</button>

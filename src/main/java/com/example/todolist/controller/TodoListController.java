@@ -169,7 +169,7 @@ public class TodoListController {
             todoRepository.saveAndFlush(todo);
             String msg = messageSource.getMessage("msg.i.todo_created", null, locale);
             redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
-            return "redirect:/todo";
+            return "redirect:/todo/" + todo.getId();
         } else {
             String msg = messageSource.getMessage("msg.e.input_something_wrong", null, locale);
             model.addAttribute("msg", new OpMsg("E", msg));
@@ -201,6 +201,26 @@ public class TodoListController {
         String msg = messageSource.getMessage("msg.i.todo_deleted", null, locale);
         redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
         return "redirect:/todo";
+    }
+
+    @PostMapping("/task/create")
+    public String createTask(@ModelAttribute TodoData todoData, BindingResult result, Model model,
+            RedirectAttributes redirectAttributes, Locale locale) {
+        boolean isValid = todoService.isValid(todoData.getNewTask(), result, locale);
+        if (isValid) {
+            Todo todo = todoData.toEntity();
+            Task task = todoData.toTaskEntity();
+            task.setTodo(todo);
+            taskRepository.saveAndFlush(task);
+
+            String msg = messageSource.getMessage("msg.i.task_created", null, locale);
+            redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
+            return "redirect:/todo/" + todo.getId();
+        } else {
+            String msg = messageSource.getMessage("msg.e.input_something_wrong", null, locale);
+            model.addAttribute("msg", new OpMsg("E", msg));
+            return "todoForm";
+        }
     }
 
     @GetMapping("/task/delete")

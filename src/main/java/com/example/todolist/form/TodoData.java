@@ -87,4 +87,13 @@ public class TodoData {
 
         return todo;
     }
+
+    public Task toTaskEntity() {
+        Task task = new Task();
+        task.setId(newTask.getId());
+        task.setTitle(newTask.getTitle());
+        task.setDone(newTask.getDone());
+        task.setDeadline(Utils.str2date(newTask.getDeadline()));
+        return task;
+    }
 }
