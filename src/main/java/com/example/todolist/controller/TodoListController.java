@@ -241,9 +241,17 @@ public class TodoListController {
 
     @PostMapping("/todo/af/upload")
     public String uploadAttachedFile(@RequestParam("todo_id") int todoId, @RequestParam("note") String note,
-            @RequestParam("file_contents") MultipartFile file_contents, RedirectAttributes redirectAttributes,
+            @RequestParam("file_contents") MultipartFile fileContents, RedirectAttributes redirectAttributes,
             Locale locale) {
-        // TODO 未実装
-        return null;
+        if (fileContents.isEmpty()) {
+            String msg = messageSource.getMessage("msg.w.attachedfile_empty", null, locale);
+            redirectAttributes.addFlashAttribute("msg", new OpMsg("W", msg));
+        } else {
+            // TODO ファイルを保存する処理
+            // 完了メッセージ
+            String msg = messageSource.getMessage("msg.i.attachedfile_uploaded", null, locale);
+            redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
+        }
+        return "redirect:/todo/" + todoId;
     }
 }
