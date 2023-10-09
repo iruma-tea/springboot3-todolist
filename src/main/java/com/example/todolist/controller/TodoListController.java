@@ -22,10 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todolist.common.OpMsg;
 import com.example.todolist.dao.TodoDatoImpl;
+import com.example.todolist.entity.AttachedFile;
 import com.example.todolist.entity.Task;
 import com.example.todolist.entity.Todo;
 import com.example.todolist.form.TodoData;
 import com.example.todolist.form.TodoQuery;
+import com.example.todolist.repository.AttachedFileRepository;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
@@ -44,6 +46,7 @@ public class TodoListController {
     private final TodoService todoService;
     private final HttpSession session;
     private final MessageSource messageSource;
+    private final AttachedFileRepository attachedFileRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -147,7 +150,8 @@ public class TodoListController {
     public ModelAndView todoById(@PathVariable(name = "id") int id, ModelAndView mv) {
         mv.setViewName("todoForm");
         Todo todo = todoRepository.findById(id).get();
-        mv.addObject("todoData", new TodoData(todo));
+        List<AttachedFile> attachedFiles = attachedFileRepository.findByTodoIdOrderById(id);
+        mv.addObject("todoData", new TodoData(todo, attachedFiles));
         session.setAttribute("mode", "update");
         return mv;
     }

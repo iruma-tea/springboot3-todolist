@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.todolist.common.Utils;
+import com.example.todolist.entity.AttachedFile;
 import com.example.todolist.entity.Task;
 import com.example.todolist.entity.Todo;
 
@@ -39,7 +40,9 @@ public class TodoData {
 
     private TaskData newTask;
 
-    public TodoData(Todo todo) {
+    private List<AttachedFileData> attachedFileList;
+
+    public TodoData(Todo todo, List<AttachedFile> attachedFiles) {
         this.id = todo.getId();
         this.title = todo.getTitle();
         this.importance = todo.getImportance();
@@ -54,6 +57,19 @@ public class TodoData {
             this.taskList.add(new TaskData(task.getId(), task.getTitle(), dt, task.getDone()));
         }
         newTask = new TaskData();
+
+        attachedFileList = new ArrayList<>();
+        String fileName;
+        String fext;
+        String contentType;
+        boolean isOpenNewWindow;
+        for (AttachedFile af : attachedFiles) {
+            fileName = af.getFileName();
+            fext = fileName.substring(fileName.lastIndexOf(".") + 1);
+            contentType = Utils.ext2contentType(fext);
+            isOpenNewWindow = contentType.equals("") ? false : true;
+            attachedFileList.add(new AttachedFileData(af.getId(), fileName, af.getNote(), isOpenNewWindow));
+        }
     }
 
     public Todo toEntity() {
