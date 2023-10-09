@@ -1,7 +1,5 @@
 package com.example.todolist.entity;
 
-import java.sql.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +26,7 @@ public class AttachedFile {
     private String fileName;
 
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     @Column(name = "note")
     private String note;

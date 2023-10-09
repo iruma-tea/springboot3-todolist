@@ -1,29 +1,43 @@
 package com.example.todolist.service;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.todolist.common.Utils;
+import com.example.todolist.entity.AttachedFile;
 import com.example.todolist.entity.Todo;
 import com.example.todolist.form.TaskData;
 import com.example.todolist.form.TodoData;
 import com.example.todolist.form.TodoQuery;
+import com.example.todolist.repository.AttachedFileRepository;
 import com.example.todolist.repository.TodoRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TodoService {
     private final MessageSource messageSource;
     private final TodoRepository todoRepository;
+    private final AttachedFileRepository attachedFileRepository;
+
+    @Value("${attached.file.path}")
+    private String ATTACHED_FILE_PATH;
 
     public boolean isValid(TodoData todoData, BindingResult result, boolean isCreate, Locale locale) {
         boolean ans = true;
@@ -182,5 +196,34 @@ public class TodoService {
             todoList = todoRepository.findAll();
         }
         return todoList;
+    }
+
+    public void saveAttachedFile(int todoId, String note, MultipartFile fileContents) {
+        String fileName = fileContents.getOriginalFilename();
+
+        File uploadDir = new File(ATTACHED_FILE_PATH);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String createTime = sdf.format(new Date());
+
+        AttachedFile af = new AttachedFile();
+        af.setTodoId(todoId);
+        af.setFileName(fileName);
+        af.setCreateTime(createTime);
+        af.setNote(note);
+
+        byte[] contents;
+        try (BufferedOutputStream bos = new BufferedOutputStream(
+                new FileOutputStream(Utils.makeAttahcedFilePath(ATTACHED_FILE_PATH, af)))) {
+            contents = fileContents.getBytes();
+            bos.write(contents);
+
+            attachedFileRepository.saveAndFlush(af);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

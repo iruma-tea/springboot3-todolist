@@ -247,7 +247,8 @@ public class TodoListController {
             String msg = messageSource.getMessage("msg.w.attachedfile_empty", null, locale);
             redirectAttributes.addFlashAttribute("msg", new OpMsg("W", msg));
         } else {
-            // TODO ファイルを保存する処理
+            // ファイルを保存する処理
+            todoService.saveAttachedFile(todoId, note, fileContents);
             // 完了メッセージ
             String msg = messageSource.getMessage("msg.i.attachedfile_uploaded", null, locale);
             redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));

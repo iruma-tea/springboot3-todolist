@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 
+import com.example.todolist.entity.AttachedFile;
+
 public class Utils {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -143,7 +145,56 @@ public class Utils {
         if (date != null) {
             s = sdf.format(date);
         }
-
         return s;
     }
+
+    /**
+     * 添付ファイルの格納ファイル名を作成する
+     * 
+     * @param path application.propertiesのattaced.file.path
+     * @param af   添付ファイル情報
+     * @return 格納ファイル名
+     */
+    public static String makeAttahcedFilePath(String path, AttachedFile af) {
+        return path + "/" + af.getCreateTime() + "_" + af.getFileName();
+    }
+
+    /**
+     * ファイル拡張子から対応するContent-Type(MIME Type)を求める
+     * 
+     * @param ext ファイル拡張子
+     * @return MIME Type
+     */
+    public static String ext2contentType(String ext) {
+        String contentType;
+        if (ext == null) {
+            return "";
+        }
+
+        switch (ext.toLowerCase()) {
+            // GIF
+            case "gif":
+                contentType = "image/gif";
+                break;
+            // JPEG
+            case "jpg":
+            case "jpeg":
+                contentType = "image/jpeg";
+                break;
+            // PNG
+            case "png":
+                contentType = "image/png";
+                break;
+            // PDF
+            case "pdf":
+                contentType = "application/pdf";
+                break;
+            // 上記以外
+            default:
+                contentType = "";
+                break;
+        }
+        return contentType;
+    }
+
 }
