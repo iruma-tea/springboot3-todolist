@@ -226,4 +226,19 @@ public class TodoService {
             e.printStackTrace();
         }
     }
+
+    public void deleteAttachedFile(int afId) {
+        AttachedFile af = attachedFileRepository.findById(afId).get();
+        File file = new File(Utils.makeAttahcedFilePath(ATTACHED_FILE_PATH, af));
+        file.delete();
+    }
+
+    public void deleteAttachedFiles(int todoId) {
+        File file;
+        List<AttachedFile> attachedFiles = attachedFileRepository.findByTodoIdOrderById(todoId);
+        for (AttachedFile af : attachedFiles) {
+            file = new File(Utils.makeAttahcedFilePath(ATTACHED_FILE_PATH, af));
+            file.delete();
+        }
+    }
 }

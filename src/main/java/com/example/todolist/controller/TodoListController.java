@@ -202,6 +202,13 @@ public class TodoListController {
 
     @PostMapping("/todo/delete")
     public String deleteTodo(@ModelAttribute TodoData todoData, RedirectAttributes redirectAttributes, Locale locale) {
+        Integer todoId = todoData.getId();
+        // 添付ファイルを削除
+        todoService.deleteAttachedFiles(todoId);
+        // atached_fileテーブルから削除
+        List<AttachedFile> attachedFiles = attachedFileRepository.findByTodoIdOrderById(todoId);
+        attachedFileRepository.deleteAllInBatch(attachedFiles);
+        // Todoを削除
         todoRepository.deleteById(todoData.getId());
         String msg = messageSource.getMessage("msg.i.todo_deleted", null, locale);
         redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
@@ -257,6 +264,19 @@ public class TodoListController {
             String msg = messageSource.getMessage("msg.i.attachedfile_uploaded", null, locale);
             redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
         }
+        return "redirect:/todo/" + todoId;
+    }
+
+    @GetMapping("/todo/af/delete")
+    public String deleteAttachedFile(@RequestParam(name = "af_id") int afId, @RequestParam(name = "todo_id") int todoId,
+            RedirectAttributes redirectAttributes, Locale locale) {
+        // 添付ファイルの削除
+        todoService.deleteAttachedFile(afId);
+        // atached_fileテーブルから削除
+        attachedFileRepository.deleteById(afId);
+
+        String msg = messageSource.getMessage("msg.i.attachedfile_delete", null, locale);
+        redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
         return "redirect:/todo/" + todoId;
     }
 }
