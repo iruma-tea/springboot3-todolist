@@ -31,6 +31,7 @@ import com.example.todolist.repository.AttachedFileRepository;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
+import com.example.todolist.view.SampleExcel;
 import com.example.todolist.view.TodoPdf;
 
 import jakarta.annotation.PostConstruct;
@@ -286,5 +287,12 @@ public class TodoListController {
         List<Todo> todoList = todoRepository.findAllByOrderById();
         pdf.addStaticAttribute("todoList", todoList);
         return pdf;
+    }
+
+    @GetMapping("/todo/excel")
+    public SampleExcel writeTodoExcel(SampleExcel excel) {
+        excel.addStaticAttribute("currentTime", new java.util.Date());
+        excel.addStaticAttribute("fileName", "sample.xlsx");
+        return excel;
     }
 }

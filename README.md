@@ -11,3 +11,7 @@
 
 ## PDFライブライ
 -- https://mvnrepository.com/artifact/com.github.librepdf/openpdf
+
+## Excel出力
+-- https://mvnrepository.com/artifact/org.apache.poi/poi
+-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
