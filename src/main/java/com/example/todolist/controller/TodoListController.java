@@ -31,6 +31,7 @@ import com.example.todolist.repository.AttachedFileRepository;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
+import com.example.todolist.view.TodoPdf;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -278,5 +279,12 @@ public class TodoListController {
         String msg = messageSource.getMessage("msg.i.attachedfile_delete", null, locale);
         redirectAttributes.addFlashAttribute("msg", new OpMsg("I", msg));
         return "redirect:/todo/" + todoId;
+    }
+
+    @GetMapping("/todo/pdf")
+    public TodoPdf writeSamplePdf(TodoPdf pdf) {
+        List<Todo> todoList = todoRepository.findAllByOrderById();
+        pdf.addStaticAttribute("todoList", todoList);
+        return pdf;
     }
 }

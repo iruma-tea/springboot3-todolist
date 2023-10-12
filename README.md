@@ -8,3 +8,6 @@
 
 ## バリデーションメッセージの国際化
 -- アノテーション名.フォームオブジェクト名.プロパティ
+
+## PDFライブライ
+-- https://mvnrepository.com/artifact/com.github.librepdf/openpdf

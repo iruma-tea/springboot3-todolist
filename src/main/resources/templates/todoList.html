@@ -50,6 +50,7 @@
             <div th:if="${#fields.hasErrors('deadlineTo')}" th:errors="*{deadlineTo}" th:errorclass="red"></div>
             <hr>
             <button type="submit" th:formaction="@{/todo/create/form}" th:text="#{button.new}">新規追加</button>
+            <a th:href="@{todo/pdf}" th:text="#{link.PDF}" target="_blank" rel="noopener noreferrer"></a>
             </form>
         <table border="1">
             <tr>
